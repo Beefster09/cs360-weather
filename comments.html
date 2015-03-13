@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type='text/javascript'>
+        const commenturl = "http://54.165.228.156/comments";
+
+        function loadComments() {
+            //console.log(commenturl);
+            $.getJSON(commenturl, function(data) {
+                var comments = [];
+                $.each(data, function(i, item) {
+                    comments.push("<li> Name: " + item.Name+"; Comment: \"" + item.Comment + '"');
+                });
+                $("#comments").html("<ul>" + comments.join('\n') + "</ul>");
+            });
+        }
+        $(document).ready(function(){
+            $("button").click(function(){
+                var myobj = {Name:$("#Name").val(),Comment:$("#Comment").val()};
+                jobj = JSON.stringify(myobj);
+                //$("#json").text(jobj);
+                $.post(commenturl, jobj, function(data, status) {
+                    $('#status').html("Done!");
+                });
+                loadComments();
+            });
+        });
+        loadComments();
+    </script>
+    </head>
+    <body>
+
+    <form id="commentForm" action="">
+        Name: <input type="text" id="Name" value="Mickey"><br>
+        Comment: <input type="text" id="Comment" value="Hello"><br>
+    </form>
+
+    <button>Post</button>
+
+    <div id="status"></div>
+
+    <h3>Comments</h3>
+    <div id="comments"></div>
+
+    </body>
+</html>
