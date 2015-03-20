@@ -1,0 +1,14 @@
+{
+    "name": "cs360-getcity.beefster",
+    "version": "1.0.2",
+    "description": "Obligatory packaging",
+    "author": "Justin Snyder <ifoundthebeef@gmail.com>",
+    "bin": {
+        "module-name": "./getcity.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Beefster09/cs360-weather"
+    },
+    "dependencies": {}
+}

@@ -3,7 +3,7 @@
     <head>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script type='text/javascript'>
-        const commenturl = "http://54.165.228.156/comments";
+        const commenturl = "http://cs360.beefedupgames.com/comments";
 
         function loadComments() {
             //console.log(commenturl);
@@ -15,18 +15,30 @@
                 $("#comments").html("<ul>" + comments.join('\n') + "</ul>");
             });
         }
-        $(document).ready(function(){
-            $("button").click(function(){
+        $(document).ready( function () {
+            $("button").click( function () {
                 var myobj = {Name:$("#Name").val(),Comment:$("#Comment").val()};
                 jobj = JSON.stringify(myobj);
                 //$("#json").text(jobj);
+                /*
                 $.post(commenturl, jobj, function(data, status) {
                     $('#status').html("Done!");
                 });
+                */
                 loadComments();
+                jQuery.ajax ({
+                    url: commenturl,
+                    type: "POST",
+                    data: jobj,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function() {
+                        $("#status").append("Success!");
+                        loadComments();
+                    }
+                });
             });
         });
-        loadComments();
     </script>
     </head>
     <body>

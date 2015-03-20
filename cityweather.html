@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>Find Weather</title>
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script type='text/javascript'>
+</script>
+<body>
+    <div>
+        <form>
+            Enter a Utah City <input id='city' type="text" value='' />
+            <input id='getweather' type='button' value="Submit" /> <br />
+            Suggestions: <div id='hint'>---</div>
+            City: <input id='pointless' type='text'/> <br />
+            Current Weather: <div id='weather'>---</div>
+        </form>
+    </div>
+    <script type='text/javascript'>
+        $("#city").keyup(function() {
+            //var url = "https://students.cs.byu.edu/~clement/CS360/ajax/getcity.cgi?q=" + $("#city").val();
+            var url = "http://54.165.228.156/getcity?q=" + $("#city").val();
+            var cities = jQuery.getJSON(url, function(data) {
+                var names = []
+                $.each(data, function(i, item) {
+                    names.push('<li>' + item.city + '</li>')
+                });
+                $("#hint").html('<ul>' + names.join('\n') + '</ul>');
+            });
+        });
+
+        $("#getweather").click( function() {
+            var city = $("#city").val();
+            $("#pointless").val(city);
+            city.replace(' ', '_');
+
+            var url = "http://api.wunderground.com/api/7bfece25a8e105bd/conditions/q/UT/" + city + ".json";
+
+            var current_weather = jQuery.getJSON(url, function(data) {
+                //console.log(data);
+
+                var city = data.current_observation.display_location.city;
+                var tempF = data.current_observation.temp_f;
+                var tempC = data.current_observation.temp_c;
+                var conditions = data.current_observation.weather;
+
+                var everything = []
+
+                everything.push("<li>City: " + city + "</li>");
+                everything.push("<li>Temperature: " + tempF + "F ( " + tempC + "C) </li>");
+                everything.push("<li>Weather: " + conditions + "</li>");
+
+                $("#weather").html("<ul>" + everything.join('\n') + "</ul>")
+            });
+        });
+    </script>
+</body>
+</html>
